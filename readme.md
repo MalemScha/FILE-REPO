@@ -30,7 +30,6 @@ For installation guide visit: https://laravel.com/docs/5.4
 
 * [Laravel](https://laravel.com/docs/5.4) - The web framework used
 * [Vue.js 2.0](https://vuejs.org/v2/guide/) - javascript progressive framework for building user interfaces. 
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
 
 ## Contributing
 
