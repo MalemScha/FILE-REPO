@@ -38,9 +38,8 @@ Contributions are encouraged and welcome. Submit pull requests or ask questions 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Malemnganba Soubam** (https://github.com/MalemScha)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
