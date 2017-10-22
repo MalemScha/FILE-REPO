@@ -11,12 +11,12 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-PHP >= 5.6.4
-OpenSSL PHP Extension
-PDO PHP Extension
-Mbstring PHP Extension
-Tokenizer PHP Extension
-XML PHP Extension examples
+* PHP >= 5.6.4
+* OpenSSL PHP Extension
+* PDO PHP Extension
+* Mbstring PHP Extension
+* Tokenizer PHP Extension
+* XML PHP Extension examples
 
 
 
