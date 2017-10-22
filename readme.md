@@ -44,5 +44,5 @@ See also the list of [contributors](https://github.com/your/project/contributors
 
 ## License
 
-This project is licensed under the MIT License.
+This project is open source and licensed under the MIT License.
 
