@@ -17,8 +17,7 @@ These instructions will get you a copy of the project up and running on your loc
 * Mbstring PHP Extension
 * Tokenizer PHP Extension
 * XML PHP Extension examples
-
-
+* SQL Server
 
 ### Installing
 
