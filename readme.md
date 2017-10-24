@@ -27,12 +27,12 @@ For installation guide visit: https://laravel.com/docs/5.4
 
 ## Built With
 
-* [Laravel](https://laravel.com/docs/5.4) - The web framework used
+* [Laravel](https://laravel.com/docs/5.4) - The PHP web framework used
 * [Vue.js 2.0](https://vuejs.org/v2/guide/) - javascript progressive framework for building user interfaces. 
 
 ## Contributing
 
-Contributions are encouraged and welcome. Submit pull requests or ask questions if something's not clear
+Contributions are encouraged and welcome. Submit pull requests or ask questions if something's not clear.
 
 
 ## Authors
