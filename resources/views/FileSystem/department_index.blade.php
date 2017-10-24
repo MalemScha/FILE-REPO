@@ -4,7 +4,7 @@
 @section('search')
 
         <div style="margin-top: 10px;" class="col-md-8 col-md-offset-1">
-            <form method="post" action={{url("/searchDepartment")}}>
+            <form method="get" action={{url("departmentDrive/search")}}>
                 {{ csrf_field() }}
                 <div class="input-group">
                     <input type="text" name="search" class="form-control" placeholder="Search for...">
@@ -89,7 +89,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Create New Folder</h4>
+                        <h4 class="modal-title" id="myModalLabel">Upload File</h4>
                     </div>
 
 
@@ -169,50 +169,15 @@
                                         </div>
                                     </div>
                                 </department_head>
-                                @if( Auth::user()->isAdmin == 1)
-                                <department_head inline-template  v-cloak>
-                                    <div style="display: inline;">
-                                        <button class="btn btn-xs btn-danger"  @click="edit=true" title="Delete Folder">
-                                            <i class="fa fa-trash" aria-hidden="true"></i></button>
-                                        <div v-if="edit">
-                                            <div class="modall is-active">
-                                                <div class="modall-background"></div>
-                                                <div class="modall-content">
-
-{{--                                                    <form class="form-horizontal" role="form" method="POST" action="{{url("/folder/".$folder->id)}}">--}}
-                                                        {{ csrf_field() }}
-                                                        {{ method_field('DELETE') }}
-                                                        <div class=" modal-body">
-
-
-                                                            <input style="display: none;" type="text" name="folder_id" value="{{ $folder->id }}">
-
-
-                                                            <center><h3>Are you sure you want to
-                                                                    delete this Folder?</h3></center>
-                                                        </div>
-                                                        <div class="modal-footer">
-
-                                                            <button type="button" class="btn btn-default"  @click="edit = false">Close</button>
-                                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                                        </div>
-                                                    </form>
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </department_head>
-                            @endif
+                                
 
                             </td>
                         </tr>
                     @endforeach
                     @foreach( $files as $file )
                         <tr>
-                            <td> <a href="#">
-                                    <i class="fa fa-file fa-lg mr-1" aria-hidden="true">
+                            <td> <a href="{{ url("downloads/".$file->id) }}">
+                                    <i class="fa {{$file->icon}}  fa-lg mr-1" aria-hidden="true">
                                     </i>{{ $file->name }}
                                     {{--<!--@foreach($file->tags as $tag) --}}
                                     {{--{{ $tag->name }} --}}
@@ -352,6 +317,9 @@
 
 
                                 @endif
+                                @if(( Auth::user()->isAdmin == 1) or(Auth::user()->id == $file->user_id))
+                                    <edit :files="{{ $file }}" file_id={{ $file->id }} ta="{{ $file->tagToArray($file) }}"  ></edit>
+                                @endif
                             </td>
 
                         </tr>
@@ -375,8 +343,8 @@
                             <tbody>
                             @foreach( $unapprovedFiles as $file )
                                 <tr>
-                                    <td> <a href="#">
-                                            <i class="fa fa-file fa-lg mr-1" aria-hidden="true">
+                                    <td> <a href="{{url("downloads/".$file->id)}}">
+                                            <i class="fa {{$file->icon}}  fa-lg mr-1" aria-hidden="true">
                                             </i>{{ $file->name }}
                                             {{--<!--@foreach($file->tags as $tag) --}}
                                             {{--{{ $tag->name }} --}}
@@ -487,8 +455,8 @@
                         <tbody>
                         @foreach( $myUnapprovedFiles as $file )
                             <tr>
-                                <td> <a href="#">
-                                        <i class="fa fa-file fa-lg mr-1" aria-hidden="true">
+                                <td> <a href="{{url("downloads/".$file->id)}}">
+                                        <i class="fa {{$file->icon}}  fa-lg mr-1" aria-hidden="true">
                                         </i>{{ $file->name }}
                                         {{--<!--@foreach($file->tags as $tag) --}}
                                         {{--{{ $tag->name }} --}}

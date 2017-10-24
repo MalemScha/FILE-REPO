@@ -153,6 +153,8 @@ class DepartmentController extends Controller
         ]);
 
         //update the department
+dd($department);
+
         $department->update([
             'name' => request('name'),
             'slug' =>str_slug(request('name'),'-')

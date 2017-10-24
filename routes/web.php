@@ -62,9 +62,14 @@ Route::post('/editMyProfile', 'UserController@userEdit');
 
 Route::post('/resetPassword', 'UserController@reset');
 
-Route::post('/search', 'FileSystemController@search');
+Route::get('myDrive/search', 'FileSystemController@search');
 
-Route::post('/searchDepartment', 'FileSystemController@searchDepartment');
+
+Route::get('Drive/search', 'FileSystemController@search');
+
+Route::get('departmentDrive/search', 'FileSystemController@searchDepartment');
+
+Route::get('departmentsDrive/search', 'FileSystemController@searchDepartment');
 
 Route::post('/reset', 'UserController@destroy');
 
@@ -87,6 +92,8 @@ Route::get('/departmentdrive/{departmentFolder}', 'DepartmentFolderController@sh
 
 Route::post('/upload', 'FileSystemController@store');
 
+Route::post('/editFile', 'FileSystemController@editFile');
+
 Route::post('/approved', 'FileSystemController@approved');
 
 Route::post('/unapproved', 'FileSystemController@unapproved');
@@ -104,5 +111,14 @@ Route::post('/sharefiletodepartment', 'FileSystemController@shareToDepartment');
 Route::post('/sharefiletouser', 'FileSystemController@shareToUser');
 
 Route::get('/Drive/shared', 'FileSystemController@share');
+
+Route::get('/download/{filename}', 'FileSystemController@download');
+
+Route::get('/downloads/{filename}', 'FileSystemController@downloads');
+
+Route::get('{filename}/download', 'FileSystemController@downloadShare');
+
+
+
 
 

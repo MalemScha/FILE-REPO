@@ -89,6 +89,7 @@ class FileSystemController extends Controller
 
         $tag = request('tags');
         $id = [];
+        $type = "";
 
         for  ($i = 0; $i < sizeof($tag); $i++) {
             $t = Tag::all()->where('name',$tag[''.$i.'']);
@@ -108,7 +109,49 @@ class FileSystemController extends Controller
                 $filename = $file->getClientOriginalName();
                 $fn = time().$filename;
                 $size = $file->getClientSize();
+                $ext = $file->getClientOriginalExtension();
                 $path = $file->storeAs('public/upload/' . Auth::user()->name, $fn);
+
+               
+
+                if($ext == "zip")
+                {
+                    $type= "fa-file-archive-o";
+                }
+                elseif($ext == "pdf")
+                {
+                    $type= "fa-file-pdf-o";
+                }
+                elseif(($ext == "doc") or ($ext == "docx")) 
+                {
+                    $type= "fa-file-word-o";
+                }
+                elseif(($ext == "jgp") or ($ext == "jpeg") or ($ext == "png") or ($ext == "gif") or ($ext == "tiff") or ($ext == "svg")) 
+                {
+                    $type= "fa-file-image-o";
+                }
+                elseif($ext == "txt")
+                {
+                    $type= "fa-file-text";
+                }
+                elseif($ext == "xls" or $ext=="xlsx")
+                {
+                    $type= "fa-file-excel-o";
+                }
+                elseif($ext == "ppt" or $ext=="pptx")
+                {
+                    $type= "fa-file-powerpoint-o";
+                }
+                elseif($ext == "mp4" or $ext == "mpeg" or $ext == "wmv")
+                {
+                    $type= "fa-file-video-o";
+                }
+                else
+                {
+                    $type= "fa-file";
+                }
+               
+
 
                 if ($size >= 1073741824) {
                     $fileSize = round($size / 1024 / 1024 / 1024,1) . 'GB';
@@ -125,6 +168,7 @@ class FileSystemController extends Controller
                     'folder_id' => request('parent_folder_id'),
                     'department_folder_id' => request('department_parent_folder_id'),
                     'description' => request('description'),
+                    'icon' => $type,
                     'isDepartmentFile' => request('isDepartmentFile'),
                     'department_id' => Auth::user()->department->id,
                     'name' => $filename,
@@ -138,6 +182,55 @@ class FileSystemController extends Controller
 
 
     }
+
+
+        public function editFile(Request $request)
+    {
+
+        
+        $this->validate(request(),[
+            'description' => 'required',
+            'tags' => 'required',
+
+        ]);
+
+        $tag = request('tags');
+
+         $id = [];
+
+        for  ($i = 0; $i < sizeof($tag); $i++) {
+            $t = Tag::all()->where('name',$tag[''.$i.'']);
+            if (count($t) > 0){
+                foreach (Tag::all()->where('name',$tag[''.$i.'']) as $item)
+                {
+                    $id[] = $item->id;
+                }
+            }else {
+                $id[] = Tag::create([
+                    'name' => $tag['' . $i . '']
+                ])->id;
+            }
+        }
+
+        $files = FileSystem::where('id', request('file_id'))->get();
+       
+        
+        \DB::table('file_systems')
+            ->where('id', request('file_id'))
+            ->update([
+                'description' => request('description')
+            
+            ]);
+            foreach($files as $file)
+            {
+                $file->tags()->sync($id,true);
+            }
+      
+
+    }
+
+
+
 
 
     public function approved(Request $request)
@@ -405,4 +498,107 @@ class FileSystemController extends Controller
             'users' => $users
         ]);
     }
+
+    public function download($id)
+    {
+        $files = FileSystem::where('id',$id)->get();
+        $error=0;
+        
+        foreach($files as $file)
+        {
+            if ($file->user_id == Auth::user()->id)
+            {
+                
+                // return response()->download(url("".Storage::url($file->path ).""));
+                // dd($file->path);
+                
+                $myfile = "./".Storage::url($file->path);
+                $headers = [
+                    'Content-Type' => mime_content_type($myfile)
+                ];
+                // dd($headers);
+                // dd(mime_content_type($myfile));
+                // dd(shell_exec('pwd').Storage::url($file->path));
+                return response()->download($myfile,$file->name,$headers);
+            }
+         else{
+               $error=1;
+            }
+        }
+             if ($error=1)
+             {
+                 abort(403, 'Unauthorized action.');
+             }
+
+    }
+
+     public function downloads($id)
+    {
+        $files = FileSystem::where('id',$id)->get();
+        $error=0;
+        
+        foreach($files as $file)
+        {
+            if ($file->department_id == Auth::user()->department_id)
+            {
+                
+                // return response()->download(url("".Storage::url($file->path ).""));
+                // dd($file->path);
+                
+                $myfile = "./".Storage::url($file->path);
+                $headers = [
+                    'Content-Type' => mime_content_type($myfile)
+                ];
+                // dd($headers);
+                // dd(mime_content_type($myfile));
+                // dd(shell_exec('pwd').Storage::url($file->path));
+                return response()->download($myfile,$file->name,$headers);
+            }
+            else{
+               $error=1;
+            }
+        }
+             if ($error=1)
+             {
+                 abort(403, 'Unauthorized action.');
+             }
+
+    }
+
+     public function downloadShare($id)
+    {
+        $files = FileSystem::where('id',$id)->get();
+
+        $share = FileSystemUser::where('file_system_id',$id)
+        ->where('user_id',Auth::user()->id)->get();
+        $error=0;
+    
+        
+        foreach($files as $file)
+        {
+            dd("fdjhjhfg");
+            if (count($share)>0)
+            {
+                // return response()->download(url("".Storage::url($file->path ).""));
+                // dd($file->path);
+                
+                $myfile = "./".Storage::url($file->path);
+                $headers = [
+                    'Content-Type' => mime_content_type($myfile)
+                ];
+                // dd($headers);
+                // dd(mime_content_type($myfile));
+                // dd(shell_exec('pwd').Storage::url($file->path));
+                return response()->download($myfile,$file->name,$headers);
+            }
+            else{
+               $error=1;
+            }
+        }
+             if ($error=1)
+             {
+                 abort(403, 'Unauthorized action.');
+             }
+    }
+
 }

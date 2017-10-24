@@ -4,10 +4,15 @@
 @section('search')
 
     <div style="margin-top: 10px;" class="col-md-8 col-md-offset-1">
-        <form method="post" action={{url("/search")}}>
+        <form method="get" action={{url("myDrive/search")}}>
             {{ csrf_field() }}
             <div class="input-group">
                 <input type="text" name="search" value={{ str_replace(' ','+',$search) }} class="form-control" placeholder="Search for...">
+                 @if ($errors->has('search'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('search') }}</strong>
+                                    </span>
+                 @endif
                 <span class="input-group-btn">
                         <button class="btn btn-default" type="submit">
                         <i class="fa fa-search" aria-hidden="true"></i>
@@ -53,8 +58,8 @@
                     <tbody>
                     @foreach( $files as $file )
                         <tr>
-                            <td> <a href="{{ Storage::url($file->path ) }}" download="">
-                                    <i class="fa fa-file fa-lg mr-1" aria-hidden="true">
+                            <td> <a href="{{ url("download/".$file->id) }}" download="">
+                                    <i class="fa {{$file->icon}} fa-lg mr-1" aria-hidden="true">
                                     </i>{{ $file->name }}
 
                                 </a></td>

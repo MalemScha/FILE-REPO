@@ -4,7 +4,7 @@
 @section('search')
 
         <div style="margin-top: 10px;" class="col-md-8 col-md-offset-1">
-            <form method="post" action={{url("/search")}}>
+            <form method="get" action={{url("Drive/search")}}>
                 {{ csrf_field() }}
                 <div class="input-group">
                     <input type="text" name="search" class="form-control" placeholder="Search for...">
@@ -182,8 +182,8 @@
                     @endforeach
                     @foreach( $files as $file )
                         <tr>
-                            <td> <a href="{{ url("".Storage::url($file->path )."") }}" download="">
-                                    <i class="fa fa-file fa-lg mr-1" aria-hidden="true">
+                            <td> <a href="{{ url("download/".$file->id) }}" >
+                                    <i class="fa {{$file->icon}} fa-lg mr-1" aria-hidden="true">
                                     </i>{{ $file->name }}
 
                                 </a></td>
@@ -230,7 +230,7 @@
                                 </department_head>
                       
 
-                                <edit :files="{{ $file }}" ta="{{ $file->tagToArray($file) }}"  ></edit>
+                                <edit :files="{{ $file }}" file_id={{ $file->id }} ta="{{ $file->tagToArray($file) }}"  ></edit>
 
 
 

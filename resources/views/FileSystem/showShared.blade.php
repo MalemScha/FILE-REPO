@@ -31,8 +31,8 @@
                     <tbody>
                     @foreach( $sharedFiles as $file )
                         <tr>
-                            <td> <a href="#">
-                                    <i class="fa fa-file fa-lg mr-1" aria-hidden="true">
+                            <td> <a href="{{url($file->id."/download")}}">
+                                    <i class="fa {{$file->icon}} fa-lg mr-1" aria-hidden="true">
                                     </i>{{ $file->name }}
                                 </a></td>
                             <td>{{  $file->created_at->toDayDateTimeString() }}</td>
